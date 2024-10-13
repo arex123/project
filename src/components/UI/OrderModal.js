@@ -19,7 +19,7 @@ const ModalOverlay = (props) => {
       <div className="flex flex-col items-end">
         <p className="text-xl font-bold">$36</p>
         <div className="space-x-4">
-          <button className="bg-white p-2 border border-red-500 mt-2 px-4 rounded-xl text-red-500">
+          <button onClick={props.onClose} className="bg-white p-2 border border-red-500 mt-2 px-4 rounded-xl text-red-500">
             Close
           </button>
           <button className="bg-red-500 p-2 mt-2 px-4 rounded-xl text-white">
@@ -31,15 +31,15 @@ const ModalOverlay = (props) => {
   );
 };
 
-const OrderModal = () => {
+const OrderModal = (props) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <BackDrop />,
+        <BackDrop onClose={props.onClose}/>,
         document.getElementById("bg-overlay")
       )}
       {ReactDOM.createPortal(
-        <ModalOverlay />,
+        <ModalOverlay onClose={props.onClose}/>,
         document.getElementById("modal-overlay")
       )}
     </>

@@ -6,7 +6,6 @@ import OrderModal from "./components/UI/OrderModal";
 function App() {
   return (
     <div>
-      <OrderModal/>
      <Header/>
      <Banner/>
      <List/>
