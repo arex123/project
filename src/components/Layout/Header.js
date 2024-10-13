@@ -12,6 +12,7 @@ const Header = () => {
                 <p className='bg-red-500 rounded-3xl px-3'>0</p>
             </div>
         </div>
+    
     </div>
   )
 }
