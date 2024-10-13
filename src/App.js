@@ -1,4 +1,5 @@
 import Header from "./components/Layout/Header";
+import List from "./components/Meals/List";
 import Banner from "./components/UI/Banner";
 
 function App() {
@@ -6,6 +7,7 @@ function App() {
     <div>
      <Header/>
      <Banner/>
+     <List/>
     </div>
   );
 }
