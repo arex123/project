@@ -1,4 +1,5 @@
 import React from "react";
+import MealItemForm from "./MealItemForm";
 
 const Meal = ({ item }) => {
   return (
@@ -9,13 +10,7 @@ const Meal = ({ item }) => {
         <p className="font-bold text-[#7F3814]">${item.price}</p>
       </div>
       <div>
-        <form  className="flex flex-col justify-right">
-          <div>
-            <label htmlFor="quantity" className="font-bold mx-2">Amount</label>
-            <input type="number" className="border p-1 w-10 " value="0" id="quantity" />
-          </div>
-          <button className="bg-red-500 p-2 mt-2 rounded-xl text-white">+ ADD</button>
-        </form>
+        <MealItemForm id={item.id} item={item}/>
       </div>
     </div>
   );

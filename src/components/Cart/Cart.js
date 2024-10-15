@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import ReactDOM from "react-dom";
-
-const BackDrop = (props) => {
+import CartContext from "../../store/store-context";
+import CartItem from "./CartItem";
+const BackDrop = (props) => {  
   return (
     <div
       onClick={props.onClose}
@@ -10,14 +11,23 @@ const BackDrop = (props) => {
   );
 };
 const ModalOverlay = (props) => {
+
+  const ctx = useContext(CartContext)
+  
+  let totalAmount = ctx.items.reduce((acc,curr)=>{
+      return acc+curr.price*curr.quantity
+  },0)
+  
+
   return (
     <div className="fixed p-5 top-[30vh] bg-white left-1/2 -translate-x-1/2 rounded-xl z-[100] w-[30%] overflow-hidden">
       <div className="space-y-2">
-        <p>Sushi</p>
+        <p className="text-2xl font-bold ">Cart</p>
+        <p>{ctx.items.map(itm=><CartItem item={itm}/>)}</p>
         <h2 className="text-xl font-bold">Total Amount</h2>
       </div>
       <div className="flex flex-col items-end">
-        <p className="text-xl font-bold">$36</p>
+        <p className="text-xl font-bold">${totalAmount}</p>
         <div className="space-x-4">
           <button onClick={props.onClose} className="bg-white p-2 border border-red-500 mt-2 px-4 rounded-xl text-red-500">
             Close
@@ -31,7 +41,7 @@ const ModalOverlay = (props) => {
   );
 };
 
-const OrderModal = (props) => {
+const Cart = (props) => {
   return (
     <>
       {ReactDOM.createPortal(
@@ -46,4 +56,4 @@ const OrderModal = (props) => {
   );
 };
 
-export default OrderModal;
+export default Cart;
