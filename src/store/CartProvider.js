@@ -1,63 +1,74 @@
 import { useState } from "react";
-import CartContext from "./store-context"
+import CartContext from "./store-context";
 
-const CartProvider = props => {
+const CartProvider = (props) => {
+  const [items, setItems] = useState([]);
 
-    const [items,setItems] = useState([])
+  const addItemToCartHandler = (item) => {
 
-    const addItemToCartHandler = (item)=>{
+    console.log("9 ",item)
 
-        //check if item is already present inside the list or not 
-        let flag=true
-        console.log("12 ",item)
-        items.map(prod=>{
-            if(prod.id==item.id){
-                flag = false
-
-                prod.quantity=Number(prod.quantity)+Number(item.quantity)
-                
-            }
-        })
-        setItems(prev=>prev.map((itm)=>{
-            if(itm.id==item.id){
-                flag=false
-                return {...itm, item:itm.quantity+item.quantity}
-            }
-          
-            return itm
+    let qnt = items.reduce((acc,ele)=>{
+        console.log("ele ",ele)
+        if(item.id==ele.id){
+            return Number(acc)+Number(ele.quantity)
         }
-    ))
-        console.log("19 ",items)
-        
-        if(flag)
-            setItems([...items,item])
-        // if(!item.quantity){
-        //     return
-        // }
+        return acc
+    },0)
 
-        // let currItem = items.reduce((accumulate,element)=>{
-        //     if(element.id==item.id){
-        //         let nquant = element.quantity+Number(quantity)
-        //         accumulate.push({...item,quantity:nquant})
-        //     }
+    console.log("qnt ",qnt)
 
-        // },[])
-
-        // setItems()
-    };
-    const removeItemFromCartHandler = (id)=>{
-        setItems(items.filter(item=>item.id!=id))
-    };
-
-    const cartContext = {
-        items:items,
-        addItem:addItemToCartHandler,
-        removeItem:removeItemFromCartHandler
+    if(qnt==0){
+        setItems([...items,item]);
+    }else{
+        console.log("21 ",qnt)
+        setItems((prev)=>{
+            return prev.map((itm)=>{
+                if(itm.id==item.id){
+                    return {...itm,quantity : qnt+1}
+                }
+                return itm
+            })
+        })
     }
 
-    return (<CartContext.Provider value={cartContext}>
-        {props.children}
-    </CartContext.Provider>)
-}
+  };
+  const removeItemFromCartHandler = (id) => {
+    console.log("id ", id);
+    let flag = true;
+    items.map((itm) => {
+      if (itm.id == id && itm.quantity == 1) {
+        deleteItemFromCartHandler(id);
+        flag = false;
+      }
+    });
+    if (flag) {
+      setItems((prev) =>
+        prev.map((itm) => {
+          if (itm.id == id) {
+            return { ...itm, quantity: Number(itm.quantity) - 1 };
+          }
+          return itm;
+        })
+      );
+    }
+  };
+  const deleteItemFromCartHandler = (id) => {
+    setItems((prev) => prev.filter((item) => item.id != id));
+  };
 
-export default CartProvider
+  const cartContext = {
+    items: items,
+    addItem: addItemToCartHandler,
+    removeItem: removeItemFromCartHandler,
+    deleteItem: deleteItemFromCartHandler,
+  };
+
+  return (
+    <CartContext.Provider value={cartContext}>
+      {props.children}
+    </CartContext.Provider>
+  );
+};
+
+export default CartProvider;
